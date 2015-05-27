@@ -56,24 +56,21 @@ class Mapper:
         print "storing started"
         print len(links)
         responses = []
-        for link in links:
-            try:
-                responses.append(requests.get(link))
-            except:
-                continue
         original_dir = self.dir_base+"_"+datetime.now().strftime("%Y%m%d_%H%M")
         if not os.path.exists(original_dir):
             os.mkdir(original_dir)
         os.chdir(original_dir)
         hashes = []
-        for r in responses:
-            imgs = self.image_grab(r)
+        for link in links:
+            self.driver.get(link)
+            time.sleep(2)
+            text = unidecode(self.driver.page_source)
+            imgs = self.image_grab(link)
             m_sha = hashlib.sha256()
             m_md5 = hashlib.md5()
-            fixed_url = r.url.replace(".","_").replace("?","_").replace("&","_").replace("=","_").replace("+","_").replace(":","_").replace("-","")
+            fixed_url = link.replace(".","_").replace("?","_").replace("&","_").replace("=","_").replace("+","_").replace(":","_").replace("-","")
             file_name = "_".join(fixed_url.split("/")[-3:-1])+"_"+fixed_url.split("/")[-1]
             for img in imgs: self.image_save(img,file_name)
-            text = unidecode(r.text)
             m_sha.update(text)
             m_md5.update(text)
             with open(file_name,"w") as f:
@@ -88,14 +85,19 @@ class Mapper:
     def link_grab(self,url):
         """Returns all links on the page.  
         Aka all those links who include the base url in the link."""
+        links = []
         try:
             self.driver.get(url)
         except:
             return []
         potential_links = [l.get_attribute("href") for l in self.driver.find_elements_by_xpath("//a")]
-        potential_links.remove(None)
-        links.append(url)
+        
+        if None in potential_links:
+            while None in potential_links:
+                potential_links.remove(None)
+        
         for link in potential_links:
+            print link
             if self.base in link:
                 links.append(link)
             else:
@@ -152,8 +154,8 @@ class Mapper:
 #potential issue and fix: http://stackoverflow.com/questions/14102416/python-requests-requests-exceptions-sslerror-errno-8-ssl-c504-eof-occurred
 if __name__ == "__main__":
     print "mapping stuff"
-    m = Mapper("http://www.allnaturalescorts.com/")
-    links = m.mapper("http://www.allnaturalescorts.com/",4,[])
+    m = Mapper("http://www.tropicaladultvacations.net/")
+    links = m.mapper("http://www.tropicaladultvacations.net/",4,[])
     print "storing stuff"
     cur_dir = os.getcwd()
     os.chdir("../storage")
