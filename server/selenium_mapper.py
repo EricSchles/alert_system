@@ -154,8 +154,8 @@ class Mapper:
 #potential issue and fix: http://stackoverflow.com/questions/14102416/python-requests-requests-exceptions-sslerror-errno-8-ssl-c504-eof-occurred
 if __name__ == "__main__":
     print "mapping stuff"
-    m = Mapper("http://www.tropicaladultvacations.net/")
-    links = m.mapper("http://www.tropicaladultvacations.net/",4,[])
+    m = Mapper("https://www.google.com/")
+    links = m.mapper("https://www.google.com",4,[])
     print "storing stuff"
     cur_dir = os.getcwd()
     os.chdir("../storage")
