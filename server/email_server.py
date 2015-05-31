@@ -10,7 +10,7 @@ class Emailer:
         self.addr = addr
         self.pw = pw
         self.msg = MIMEMultipart('alternative')
-        self.receiver = ['HTRUdany@gmail.com']
+        self.receiver = ['']
         if website:
             self.msg['Subject'] = "Update to website"+website
         else:
