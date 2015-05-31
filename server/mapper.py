@@ -183,7 +183,7 @@ class Mapper:
 if __name__ == "__main__":
     print "mapping stuff"
     m = Mapper("https://www.google.com/")
-    links = m.mapper("https://www.google.com,1,[])
+    links = m.mapper("https://www.google.com",1,[])
     print "storing stuff"
     cur_dir = os.getcwd()
     os.chdir("../storage")
