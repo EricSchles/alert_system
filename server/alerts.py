@@ -57,9 +57,10 @@ class Alert:
                     for ind_y,hashing_y in enumerate(hash_set_y):
                         hash_val_y = hashing_y.split(":")[1]
                         if name_t in hashing_y:
-                            self.emailer.add_website(site)
-                            self.emailer.add_message("the website was updated")
-                            self.emailer.send()
+                            if hash_val_t != hash_val_y:
+                                self.emailer.add_website(site)
+                                self.emailer.add_message("the website was updated")
+                                self.emailer.send()
 
 if __name__ == '__main__':
     alerter = Alert()
